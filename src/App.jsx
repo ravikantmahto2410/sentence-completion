@@ -13,6 +13,8 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [results, setResults] = useState([]);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [score, setScore] = useState(0);
+
 
   useEffect(() => {
     fetchQuestions()
@@ -42,6 +44,11 @@ function App() {
   const handleNext = () => {
     if (!currentQuestion || !currentQuestion.correctAnswer) return;
     const isCorrect = JSON.stringify(selectedWords) === JSON.stringify(currentQuestion.correctAnswer);
+    
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+
     setResults([...results, { question: currentQuestion, userAnswer: selectedWords, isCorrect }]);
     if (currIdx + 1 < questions.length) {
       setCurrIdx(currIdx + 1);
@@ -54,7 +61,7 @@ function App() {
 
   const handleTimeEnd = () => handleNext();
 
-  if (showFeedback) return <Feedback results={results} />;
+  if (showFeedback) return <Feedback results={results} score={score} />;
 
   return (
     <div className="w-screen h-screen overflow-hidden bg-[#F8F8F8] flex flex-col justify-center flex-wrap">
