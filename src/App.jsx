@@ -74,18 +74,16 @@ function App() {
                 <button className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
               </div>
               <div className="flex gap-1 w-full max-w-md mx-auto mt-10">
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
-                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                {questions.map((_, index) => (
+                <div
+                  key={index}
+                  className={`flex-1 h-2 rounded transition-all duration-300 ${
+                    index <= currIdx ? 'bg-yellow-400' : 'bg-gray-200'
+                  }`}
+                />
+                ))}
               </div>
-              
+
             </div>
             
             <Question
