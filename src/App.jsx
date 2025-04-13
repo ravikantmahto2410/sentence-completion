@@ -66,17 +66,17 @@ function App() {
                 <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} onTimeEnd={handleTimeEnd} />
                 <button className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
               </div>
-              <div class="flex gap-1 w-full max-w-md mx-auto mt-10">
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
-                <div class="flex-1 h-1 rounded bg-gray-200"></div>
+              <div className="flex gap-1 w-full max-w-md mx-auto mt-10">
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
+                <div className="flex-1 h-1 rounded bg-gray-200"></div>
               </div>
               
             </div>
@@ -94,7 +94,7 @@ function App() {
                   selectedWords.filter(Boolean).length !== currentQuestion.correctAnswer.length
                 }
                 onClick={handleNext}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded disabled:opacity-50"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded "
               >
                 Next
               </button>
