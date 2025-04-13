@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import React, { useEffect, useState } from 'react';
 import { fetchQuestions } from './dataservice';
 import Question from './components/Question';
@@ -71,7 +71,9 @@ function App() {
             <div>
               <div className='flex flex-row justify-between'>
                 <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} onTimeEnd={handleTimeEnd} />
-                <button className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
+                <button 
+
+                  className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
               </div>
               <div className="flex gap-1 w-full max-w-md mx-auto mt-10">
                 {questions.map((_, index) => (
