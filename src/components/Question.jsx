@@ -1,26 +1,30 @@
 import React from 'react';
 
 const Question = ({ question, selectedWords, onSelectWord, onUnselectWord }) => {
-  if (!question || !question.sentence || !question.options) {
+  if (!question || !question.question || !question.options) {
     return <div className="text-center text-gray-500">Loading question...</div>;
   }
 
+  // Split the question string by the blanks (4 blanks = 3 "_____")
+  const parts = question.question.split("_____________");
+
   return (
     <div className="mt-4">
-      <h3 className="text-lg font-semibold mb-4">Select the Missing words in the correct order</h3>
-      <p className="text-xl font-medium mb-6">
-        {question.sentence.map((word, index) => (
-          word === "" ? (
-            <span
-              key={index}
-              onClick={() => onUnselectWord(index)}
-              className="inline-block border-b-2 border-black px-3 mx-1 cursor-pointer bg-yellow-100 rounded"
-            >
-              {selectedWords[index] || "____"}
-            </span>
-          ) : (
-            <span key={index} className="mx-1">{word}</span>
-          )
+      <h3 className="text-lg font-semibold mb-4">Select the missing words in the correct order</h3>
+
+      <p className="text-xl font-medium mb-6 flex flex-wrap">
+        {parts.map((part, idx) => (
+          <React.Fragment key={idx}>
+            <span>{part.trim()}</span>
+            {idx < question.correctAnswer.length && (
+              <span
+                onClick={() => onUnselectWord(idx)}
+                className="inline-block border-b-2 border-black px-3 mx-1 cursor-pointer bg-yellow-100 rounded min-w-[60px] text-center"
+              >
+                {selectedWords[idx] || "____"}
+              </span>
+            )}
+          </React.Fragment>
         ))}
       </p>
 

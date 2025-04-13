@@ -15,7 +15,12 @@ function App() {
   const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
-    fetchQuestions().then(data => setQuestions(data));
+    fetchQuestions()
+      .then(data => {
+        
+        setQuestions(data);  
+      })
+      .catch(err => console.error("Failed to fetch questions:", err));
   }, []);
 
   const currentQuestion = questions[currIdx];
@@ -35,8 +40,8 @@ function App() {
   };
 
   const handleNext = () => {
-    if (!currentQuestion || !currentQuestion.answer) return;
-    const isCorrect = JSON.stringify(selectedWords) === JSON.stringify(currentQuestion.answer);
+    if (!currentQuestion || !currentQuestion.correctAnswer) return;
+    const isCorrect = JSON.stringify(selectedWords) === JSON.stringify(currentQuestion.correctAnswer);
     setResults([...results, { question: currentQuestion, userAnswer: selectedWords, isCorrect }]);
     if (currIdx + 1 < questions.length) {
       setCurrIdx(currIdx + 1);
@@ -59,7 +64,7 @@ function App() {
             <div>
               <div className='flex flex-row justify-between'>
                 <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} onTimeEnd={handleTimeEnd} />
-                <buttton className="border-2 border-black rounded-md px-2 py-0.5">Quit</buttton>
+                <button className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
               </div>
               <div class="flex gap-1 w-full max-w-md mx-auto mt-10">
                 <div class="flex-1 h-1 rounded bg-gray-200"></div>
@@ -85,8 +90,8 @@ function App() {
             <div className="mt-6 text-right">
               <button
                 disabled={
-                  !currentQuestion.answer ||
-                  selectedWords.filter(Boolean).length !== currentQuestion.answer.length
+                  !currentQuestion.correctAnswer ||
+                  selectedWords.filter(Boolean).length !== currentQuestion.correctAnswer.length
                 }
                 onClick={handleNext}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded disabled:opacity-50"

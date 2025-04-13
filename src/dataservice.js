@@ -1,6 +1,7 @@
 
 export const fetchQuestions = async () => {
-    const response = await fetch("http://localhost:3000/questions");
-    const data = await response.json();
-    return data;
-  };
+  const res = await fetch('http://localhost:3000/questions');  // 👈 This should be the correct URL
+  if (!res.ok) throw new Error("Network response was not ok");
+  const data = await res.json();
+  return data;  // returns array, not { questions: [...] }
+};
