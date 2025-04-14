@@ -13,37 +13,41 @@ function Quiz() {
   const [results, setResults] = useState([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const isInitialMount = useRef(true); // Track initial mount
+  const isInitialMount = useRef(true);
 
-  // Fetch questions on initial load
   useEffect(() => {
+    setLoading(true);
     fetchQuestions()
       .then(data => {
         setQuestions(data);
+        setLoading(false);
       })
-      .catch(err => console.error("Failed to fetch questions:", err));
+      .catch(err => {
+        console.error("Failed to fetch questions:", err);
+        setError("Failed to load questions. Using empty set."); // Fallback to empty if JSON fails
+        setLoading(false);
+      });
   }, []);
 
-  // Handle initial mount and redirect on reload
   useEffect(() => {
     if (isInitialMount.current) {
-      isInitialMount.current = false; // Mark as not initial after first run
-      // Check if this is a reload (no sessionStorage from front page)
+      isInitialMount.current = false;
       const fromFrontPage = sessionStorage.getItem('fromFrontPage') === 'true';
       if (location.pathname === '/quiz' && !fromFrontPage) {
-        // Reset state and redirect to front page on reload
         setCurrIdx(0);
         setSelectedWords([]);
         setTimeLeft(30);
         setResults([]);
         setShowFeedback(false);
         setScore(0);
-        sessionStorage.removeItem('fromFrontPage'); // Clear the flag
-        navigate('/', { replace: true }); // Redirect to front page
+        sessionStorage.removeItem('fromFrontPage');
+        navigate('/', { replace: true });
       } else if (fromFrontPage) {
-        sessionStorage.removeItem('fromFrontPage'); // Clear after confirming
+        sessionStorage.removeItem('fromFrontPage');
       }
     }
   }, [location, navigate]);
@@ -85,18 +89,22 @@ function Quiz() {
   const handleTimeEnd = () => handleNext();
 
   if (showFeedback) return <Feedback results={results} score={score} />;
+  if (loading) return <div className="text-center text-gray-500">Loading...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-[#F8F8F8] flex flex-col justify-center flex-wrap">
-      <div className="w-[975px] h-[650px] mt-[112px] ml-[196px] bg-white rounded-[24px] p-[40px] shadow-lg">
+    <div className="w-screen h-screen overflow-hidden bg-[#F8F8F8] flex flex-col justify-center items-center">
+      <div className="w-full max-w-[975px] h-[650px] mt-4 md:mt-8 lg:mt-[112px] ml-4 md:ml-8 lg:ml-[196px] bg-white rounded-[24px] p-4 md:p-6 lg:p-[40px] shadow-lg">
         {currentQuestion ? (
           <>
             <div>
-              <div className='flex flex-row justify-between'>
+              <div className="flex flex-row justify-between items-center">
                 <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} onTimeEnd={handleTimeEnd} />
-                <button className="border-2 border-black rounded-md px-2 py-0.5">Quit</button>
+                <button className="border-2 border-black rounded-md px-2 py-1 md:px-3 md:py-1 lg:px-2 lg:py-0.5">
+                  Quit
+                </button>
               </div>
-              <div className="flex gap-1 w-full max-w-md mx-auto mt-10">
+              <div className="flex gap-1 w-full max-w-md mx-auto mt-4 md:mt-6 lg:mt-10">
                 {questions.map((_, index) => (
                   <div
                     key={index}
@@ -113,14 +121,14 @@ function Quiz() {
               onSelectWord={handleSelectWord}
               onUnselectWord={handleUnselectWord}
             />
-            <div className="mt-6 text-right">
+            <div className="mt-4 text-right md:mt-6 lg:mt-6">
               <button
                 disabled={
                   !currentQuestion.correctAnswer ||
                   selectedWords.filter(Boolean).length !== currentQuestion.correctAnswer.length
                 }
                 onClick={handleNext}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded disabled:opacity-50"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-1 md:px-5 md:py-1.5 lg:px-6 lg:py-2 rounded disabled:opacity-50"
               >
                 Next
               </button>
