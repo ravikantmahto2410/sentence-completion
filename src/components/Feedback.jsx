@@ -1,8 +1,8 @@
 import React from 'react';
-import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const Feedback = ({ results,score }) => {
+const Feedback = ({ results, score }) => {
   return (
     <div className="p-8">
       <div className="text-center mb-6">
@@ -14,8 +14,8 @@ const Feedback = ({ results,score }) => {
             text={` ${score} / ${results.length}`}
             styles={buildStyles({
               textColor: '#000',
-              pathColor: '#facc15', 
-              trailColor: '#e5e7eb', 
+              pathColor: '#facc15',
+              trailColor: '#e5e7eb',
               textSize: '16px',
             })}
           />

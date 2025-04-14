@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { fetchQuestions } from './dataservice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Question from './components/Question';
@@ -15,6 +15,7 @@ function Quiz() {
   const [score, setScore] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const isInitialMount = useRef(true); // Track initial mount
 
   // Fetch questions on initial load
   useEffect(() => {
@@ -25,19 +26,25 @@ function Quiz() {
       .catch(err => console.error("Failed to fetch questions:", err));
   }, []);
 
-  // Reset state and redirect to front page on initial load or reload
+  // Handle initial mount and redirect on reload
   useEffect(() => {
-    // Check if this is the initial mount or a reload on /quiz
-    const isInitialLoad = !location.state?.fromFrontPage;
-    if (isInitialLoad && location.pathname === '/quiz') {
-      // Reset all state
-      setCurrIdx(0);
-      setSelectedWords([]);
-      setTimeLeft(30);
-      setResults([]);
-      setShowFeedback(false);
-      setScore(0);
-      navigate('/', { replace: true }); // Redirect to front page
+    if (isInitialMount.current) {
+      isInitialMount.current = false; // Mark as not initial after first run
+      // Check if this is a reload (no sessionStorage from front page)
+      const fromFrontPage = sessionStorage.getItem('fromFrontPage') === 'true';
+      if (location.pathname === '/quiz' && !fromFrontPage) {
+        // Reset state and redirect to front page on reload
+        setCurrIdx(0);
+        setSelectedWords([]);
+        setTimeLeft(30);
+        setResults([]);
+        setShowFeedback(false);
+        setScore(0);
+        sessionStorage.removeItem('fromFrontPage'); // Clear the flag
+        navigate('/', { replace: true }); // Redirect to front page
+      } else if (fromFrontPage) {
+        sessionStorage.removeItem('fromFrontPage'); // Clear after confirming
+      }
     }
   }, [location, navigate]);
 

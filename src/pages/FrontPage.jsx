@@ -9,6 +9,7 @@ const FrontPage = () => {
   };
 
   const handleStart = () => {
+    sessionStorage.setItem('fromFrontPage', 'true');
     navigate('/quiz', { state: { fromFrontPage: true } });
   };
 
