@@ -10,10 +10,10 @@ const Question = ({ question, selectedWords, onSelectWord, onUnselectWord }) => 
 
   return (
     <div className="flex flex-col justify-around">
-      <h3 className="text-xl mt-2 text-[#616464] flex  justify-center font-semibold mb-4">Select the missing words in the correct order</h3>
+      <h3 className="text-xl mt-4 text-[#616464] flex  justify-center font-semibold mb-4 md:text-2xl">Select the missing words in the correct order</h3>
 
-        <div className="w-[811px] h-[166px] flex flex-col justify-around  gap-[18px]">
-            <p className="text-2xl font-medium tracking-normal ">
+        <div className="w-full h-[166px] flex flex-col justify-around gap-4 overflow-hidden md:w-[80%] md:max-w-[811px] md:h-[200px] lg:w-[811px] lg:h-[166px]">
+            <p className="text-20px/[26px] text-left text-2xl font-medium tracking-normal  ">
                 {parts.map((part, idx) => (
                 <React.Fragment key={idx}>
                     <span>{part.trim()}</span>
@@ -30,7 +30,7 @@ const Question = ({ question, selectedWords, onSelectWord, onUnselectWord }) => 
             </p>
         </div>
 
-        <div className="flex flex-row w-[377px] h-[38px] justify-around gap-1">
+        <div className="grid grid-cols-4 w-[377px] h-[38px] gap-[16px] mx-auto min-h-[38px] min-w-[377px]">
             {question.options
             .filter(option => !selectedWords.includes(option))
             .map((option, idx) => (
@@ -38,7 +38,7 @@ const Question = ({ question, selectedWords, onSelectWord, onUnselectWord }) => 
                 key={idx}
                 onClick={() => onSelectWord(option)}
                 disabled={selectedWords.includes(option)}
-                className={` rounded-lg text-16px/[22px] flex flex-row  text-base border border-[#BFC6C6] transition ${
+                className={`flex items-center justify-center w-[95px] h-[38px] p-[8px_10px] rounded-[8px] border border-[#BFC6C6] bg-white text-base font-medium text-[#414343] leading-[22px] tracking-[-0.01em] truncate transition-all  duration-200${
                 selectedWords.includes(option)
                     ? 'bg-[#FFFFFF] text-[#414343] cursor-not-allowed'
                     : 'bg-[#FFFFFF] text-[#414343] hover:bg-blue-200'
