@@ -23,8 +23,10 @@ function Quiz() {
     setLoading(true);
     fetchQuestions()
       .then(data => {
-        setQuestions(data);
+        const questionList = data.questions || [];
+        setQuestions(questionList);
         setLoading(false);
+        console.log('Loaded questions:', questionList); // Debug log
       })
       .catch(err => {
         console.error("Failed to fetch questions:", err);
